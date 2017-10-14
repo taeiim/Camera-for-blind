@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ExifInterface;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.graphics.Canvas;
@@ -19,6 +20,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
@@ -71,7 +73,8 @@ public class CameraTensorflowActivity extends AppCompatActivity {
     private Classifier classifier;
     private Executor executor = Executors.newSingleThreadExecutor();
     private TextView textViewResult;
-    private Button btnDetectObject, btnToggleCamera;
+    private Button btnDetectObject;
+    private ImageView btnToggleCamera;
     private ImageView imageViewResult;
     private CameraView cameraView;
     private String resultString;
@@ -88,7 +91,7 @@ public class CameraTensorflowActivity extends AppCompatActivity {
         textViewResult = (TextView) findViewById(R.id.textViewResult);
         textViewResult.setMovementMethod(new ScrollingMovementMethod());
 
-        btnToggleCamera = (Button) findViewById(R.id.btnToggleCamera);
+        btnToggleCamera = (ImageView) findViewById(R.id.btnToggleCamera);
         btnDetectObject = (Button) findViewById(R.id.btnDetectObject);
 
         if (cameraView != null) {
@@ -175,6 +178,15 @@ public class CameraTensorflowActivity extends AppCompatActivity {
         String title = "image11";
         String filePath = (context.getExternalCacheDir()).toString() + "/" + title + ".jpg";
 
+        int width = this.getResources().getDisplayMetrics().widthPixels; // 기기의 가로 크기
+//        Bitmap temp = BitmapFactory.decodeResource(getResources(), R.drawable.back);
+        int img_width = finalBitmap.getWidth(); // 변환할 이미지의 가로
+        int img_height = finalBitmap.getHeight();  // 변환할 이미지의 세로
+
+        float di = (float)img_width / (float)width; // 배수 계산
+        int height = (int)((float)img_height / di); // 새로운 이미지의 세로 계산
+
+        finalBitmap = Bitmap.createScaledBitmap(finalBitmap, width, height, true);    // 이미지 리사이즈
 
         try {
             File file = new File(title);
@@ -302,8 +314,12 @@ public class CameraTensorflowActivity extends AppCompatActivity {
             myTTS = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
                 @Override
                 public void onInit(int i) {
+                    if(resultString == null || resultString.length() ==0 ){
+                        myTTS.speak("인식된 물체가 없습니다.",TextToSpeech.QUEUE_FLUSH,null);
+                    }
                     myTTS.setLanguage(Locale.KOREAN);
                     myTTS.speak(resultString, TextToSpeech.QUEUE_FLUSH, null);
+
                 }
             });
 
@@ -317,7 +333,13 @@ public class CameraTensorflowActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        cameraView.start();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+            cameraView.start();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
+                    100);
+        }
     }
 
     @Override
