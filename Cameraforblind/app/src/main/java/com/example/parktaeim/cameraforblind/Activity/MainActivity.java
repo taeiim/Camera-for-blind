@@ -38,65 +38,13 @@ import static com.example.parktaeim.cameraforblind.R.id.loadCameraButton;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+            setContentView(R.layout.activity_main);
 
-        btnProgress = (Button) findViewById(R.id.btnProgress);
-        final Bitmap myBitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.face);
-        detectFace(myBitmap);
     }
 
-    public void detectFace(final Bitmap myBitmap) {
 
-        final Paint rectPaint = new Paint();
-        rectPaint.setStrokeWidth(5);
-        rectPaint.setColor(Color.RED);
-        rectPaint.setStyle(Paint.Style.STROKE);
-
-        final Bitmap tempBitmap = Bitmap.createBitmap(myBitmap.getWidth(), myBitmap.getHeight(), Bitmap.Config.RGB_565);
-        final Canvas canvas = new Canvas(tempBitmap);
-        canvas.drawBitmap(myBitmap, 0, 0, null);
-
-        btnProgress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                com.google.android.gms.vision.face.FaceDetector faceDetector = new com.google.android.gms.vision.face.FaceDetector.Builder(getApplicationContext())
-                        .setTrackingEnabled(false)
-                        .setLandmarkType(com.google.android.gms.vision.face.FaceDetector.ALL_LANDMARKS)
-                        .setMode(com.google.android.gms.vision.face.FaceDetector.FAST_MODE)
-                        .build();
-                if (!faceDetector.isOperational()) {
-                    Toast.makeText(getApplicationContext(), "your device is not operationg face detector", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Frame frame = new Frame.Builder().setBitmap(myBitmap).build();
-                SparseArray<Face> sparseArray = faceDetector.detect(frame);
-
-                if (sparseArray != null) {
-                    RectF rectF;
-                    for (int i = 0; i < sparseArray.size(); i++) {
-                        Face face = sparseArray.valueAt(i);
-                        float x1 = face.getPosition().x;
-                        float y1 = face.getPosition().y;
-                        float x2 = x1 + face.getWidth();
-                        float y2 = y1 + face.getHeight();
-                        rectF = new RectF(x1, y1, x2, y2);
-                        canvas.drawRoundRect(rectF, 2, 2, rectPaint);
-                        Log.d(String.valueOf(x1) + String.valueOf(x2) + String.valueOf(y1) + String.valueOf(y2), "locationOfRect");
-                    }
-                    BitmapDrawable drawable = new BitmapDrawable(getResources(), tempBitmap);
-                    drawable.draw(canvas);
-//                    imageView.setImageDrawable(drawable);
-                    Toast.makeText(getApplicationContext(), "take picture", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "I don't know what to do", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
-    }
 }

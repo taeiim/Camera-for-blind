@@ -10,9 +10,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <!--<meta-date
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="face"/>-->
         <meta-date
             android:name="com.google.android.gms.vision.DEPENDENCIES"
-            android:value="face"/>
+            android:value="ocr"/>
+
         <activity android:name=".Activity.MainActivity">
 
         </activity>
