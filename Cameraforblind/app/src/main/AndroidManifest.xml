@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.parktaeim.cameraforblind">
 
     <application
@@ -9,6 +10,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-date
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="face"/>
         <activity android:name=".Activity.MainActivity">
 
         </activity>
@@ -23,6 +27,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Activity.SettingsActivity"
+            tools:ignore="DuplicateActivity" />
     </application>
 
     <uses-feature android:name="android.hardware.camera" />

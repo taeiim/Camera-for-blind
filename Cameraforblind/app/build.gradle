@@ -40,4 +40,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile files('libs/libandroid_tensorflow_inference_java.jar')
     compile 'com.flurgle:camerakit:0.9.13'
+    compile 'com.google.android.gms:play-services-vision:10.0.1'
 }
