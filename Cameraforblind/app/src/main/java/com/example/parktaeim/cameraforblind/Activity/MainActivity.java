@@ -27,8 +27,8 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.parktaeim.cameraforblind.R;
-import com.google.android.gms.vision.Frame;
-import com.google.android.gms.vision.face.Face;
+//import com.google.android.gms.vision.Frame;
+//import com.google.android.gms.vision.face.Face;
 
 import static com.example.parktaeim.cameraforblind.R.id.faceDetectionView;
 import static com.example.parktaeim.cameraforblind.R.id.loadCameraButton;
