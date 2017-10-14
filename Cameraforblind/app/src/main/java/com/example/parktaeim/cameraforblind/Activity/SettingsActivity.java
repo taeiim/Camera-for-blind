@@ -1,6 +1,7 @@
 package com.example.parktaeim.cameraforblind.Activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -13,8 +14,8 @@ import android.widget.ImageView;
 import com.example.parktaeim.cameraforblind.Adapter.SettingsRecyclerViewAdapter;
 import com.example.parktaeim.cameraforblind.Model.SettingsItem;
 import com.example.parktaeim.cameraforblind.R;
+import com.example.parktaeim.cameraforblind.RecyclerItemClickListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -42,6 +43,28 @@ public class SettingsActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if (position == 0) {
+                    Intent intent = new Intent(SettingsActivity.this, ImageRecognitionActivity.class);
+                    startActivity(intent);
+                }
+//                }else if(position == 1){
+//
+//                }
+            }
+        }));
+//        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, int position) {
+//
+//            }
+//
+//        }));
+
+
     }
 
     private void setUpRecyclerView() {
@@ -50,6 +73,7 @@ public class SettingsActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
 
         ArrayList<SettingsItem> items= new ArrayList<>();
+        items.add(new SettingsItem(R.drawable.icon_photo,"갤러리 확인"));
         items.add(new SettingsItem(R.drawable.icon_record_voice,"사진 촬영 음성"));
 
         recyclerView.setHasFixedSize(true);
