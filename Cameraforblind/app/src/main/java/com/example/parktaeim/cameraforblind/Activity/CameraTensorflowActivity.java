@@ -1,10 +1,11 @@
-package com.example.parktaeim.cameraforblind;
+package com.example.parktaeim.cameraforblind.Activity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,8 +18,12 @@ import com.flurgle.camerakit.CameraListener;
 import com.flurgle.camerakit.CameraView;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import android.speech.tts.TextToSpeech;
+
 
 /**
  * Created by parktaeim on 2017. 10. 14..
@@ -42,6 +47,8 @@ public class CameraTensorflowActivity extends AppCompatActivity {
     private Button btnDetectObject, btnToggleCamera;
     private ImageView imageViewResult;
     private CameraView cameraView;
+    private String resultString;
+    private TextToSpeech myTTS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +74,31 @@ public class CameraTensorflowActivity extends AppCompatActivity {
                 imageViewResult.setImageBitmap(bitmap);
 
                 final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
+
+                Log.d("result message",results.toString());
+
+                resultString = results.toString();
+                String pattern =  "^[a-zA-Z]*$";
+
+                resultString = resultString.replaceAll("[^a-zA-Z,]","");
+                Log.d("resultString",resultString);
+
+                myTTS = new TextToSpeech(getApplicationContext(),new TextToSpeech.OnInitListener(){
+                    @Override
+                    public void onInit(int i) {
+                        myTTS.setLanguage(Locale.KOREAN);
+                        myTTS.speak(resultString,TextToSpeech.QUEUE_FLUSH,null);
+                    }
+                });
+
+//                Pattern p = Pattern.compile("(^[a-zA-Z]*$)");
+//
+//                String regExp = "";
+//                String englishResult = resultString.replaceAll("^[a-zA-Z]*$", "");
+//                Log.d("englishResult",p.toString());
+//                resultString = pattern;
+//                Pattern pattern1 = Pattern.compile(regExp);
+//                Matcher matcher = Pattern.ma
 
                 textViewResult.setText(results.toString());
             }
@@ -104,6 +136,7 @@ public class CameraTensorflowActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        myTTS.shutdown();
         executor.execute(new Runnable() {
             @Override
             public void run() {
@@ -142,4 +175,8 @@ public class CameraTensorflowActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
+
 }
