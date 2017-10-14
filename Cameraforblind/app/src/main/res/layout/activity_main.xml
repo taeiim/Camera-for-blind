@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.parktaeim.cameraforblind.Activity.MainActivity">
+    android:fitsSystemWindows="true"
+    tools:context=".Activity.MainActivity">
 
-    <TextureView
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/cameraTextureView"/>
-</android.support.constraint.ConstraintLayout>
+        android:layout_height="400dp"
+        android:id="@+id/image"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnProgress"
+        android:text="process"/>
+    <!--<include layout="@layout/content_main" />-->
+
+</android.support.design.widget.CoordinatorLayout>
