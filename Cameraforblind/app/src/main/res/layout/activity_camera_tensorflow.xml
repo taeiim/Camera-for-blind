@@ -21,9 +21,10 @@
     <com.google.android.cameraview.CameraView
         android:id="@+id/cameraView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:keepScreenOn="true"
         android:adjustViewBounds="true"
+        android:layout_weight="8"
         app:autoFocus="true"
         app:aspectRatio="4:3"
         app:facing="back"
@@ -73,8 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="detect_object"
-            android:textColor="@android:color/black"
-            android:visibility="gone" />
+            android:textColor="@android:color/black" />
     </LinearLayout>
 
 </LinearLayout>

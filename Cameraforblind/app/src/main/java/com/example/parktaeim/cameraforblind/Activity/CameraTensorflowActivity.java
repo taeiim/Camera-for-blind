@@ -7,17 +7,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-<<<<<<< HEAD
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
-=======
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
->>>>>>> 320cdbc4dfd442d10857c373722eee131675390b
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -35,14 +32,9 @@ import android.widget.TextView;
 import com.example.parktaeim.cameraforblind.Classifier;
 import com.example.parktaeim.cameraforblind.R;
 import com.example.parktaeim.cameraforblind.TensorFlowImageClassifier;
-<<<<<<< HEAD
 import com.google.android.cameraview.CameraView;
-=======
-import com.flurgle.camerakit.CameraListener;
-import com.flurgle.camerakit.CameraView;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.face.Face;
->>>>>>> 320cdbc4dfd442d10857c373722eee131675390b
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -97,10 +89,29 @@ public class CameraTensorflowActivity extends AppCompatActivity {
         btnToggleCamera = (Button) findViewById(R.id.btnToggleCamera);
         btnDetectObject = (Button) findViewById(R.id.btnDetectObject);
 
-<<<<<<< HEAD
         if (cameraView != null) {
             cameraView.addCallback(mCallback);
         }
+
+        btnToggleCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (cameraView != null) {
+                    int facing = cameraView.getFacing();
+                    cameraView.setFacing(facing == CameraView.FACING_FRONT ?
+                            CameraView.FACING_BACK : CameraView.FACING_FRONT);
+                }
+            }
+        });
+
+        btnDetectObject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cameraView.takePicture();
+            }
+        });
+        initTensorFlowAndLoadModel();
+
 //        cameraView.takePicture();
 
 //        cameraView.setCameraListener(new CameraListener() {
@@ -142,63 +153,7 @@ public class CameraTensorflowActivity extends AppCompatActivity {
 //                textViewResult.setText(results.toString());
 //            }
 //        });
-=======
-        btnProgress = (Button) findViewById(R.id.btnProgress);
-        final Bitmap myBitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.face);
-
-        cameraView.setCameraListener(new CameraListener() {
-            @Override
-            public void onPictureTaken(byte[] picture) {
-                super.onPictureTaken(picture);
-
-                bitmap = BitmapFactory.decodeByteArray(picture, 0, picture.length);
-
-                bitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE, INPUT_SIZE, false);
-
-                imageViewResult.setImageBitmap(bitmap);
-
-                final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
-
-                Log.d("result message", results.toString());
-
-                resultString = results.toString();
-                String pattern = "^[a-zA-Z]*$";
-
-                resultString = resultString.replaceAll("[^a-zA-Z,]", "");
-                Log.d("resultString", resultString);
-
-                myTTS = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-                    @Override
-                    public void onInit(int i) {
-                        myTTS.setLanguage(Locale.KOREAN);
-                        myTTS.speak(resultString, TextToSpeech.QUEUE_FLUSH, null);
-                    }
-                });
-
-//                Pattern p = Pattern.compile("(^[a-zA-Z]*$)");
->>>>>>> 320cdbc4dfd442d10857c373722eee131675390b
-//
-        btnToggleCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (cameraView != null) {
-                    int facing = cameraView.getFacing();
-                    cameraView.setFacing(facing == CameraView.FACING_FRONT ?
-                            CameraView.FACING_BACK : CameraView.FACING_FRONT);
-                }
-            }
-        });
-
-        btnDetectObject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cameraView.takePicture();
-            }
-        });
-
-        initTensorFlowAndLoadModel();
     }
-
 //    public static void addImageToGallery(final String filePath, final Context context) {
 //
 //        ContentValues values = new ContentValues();
@@ -219,15 +174,14 @@ public class CameraTensorflowActivity extends AppCompatActivity {
         String filePath = (context.getExternalCacheDir()).toString() + "/" + title + ".jpg";
 
 
-
-        try{
+        try {
             File file = new File(title);
-            FileOutputStream fos = openFileOutput(title,0);
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG,100,fos);
+            FileOutputStream fos = openFileOutput(title, 0);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             fos.flush();
             fos.close();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -240,132 +194,10 @@ public class CameraTensorflowActivity extends AppCompatActivity {
         checkPermission();
         MediaStore.Images.Media.insertImage(getContentResolver(), finalBitmap, "title", "descripton");
 
-        Toast.makeText(this,"파일 저장 완료",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "파일 저장 완료", Toast.LENGTH_SHORT).show();
 
-//        String root = Environment.getExternalStorageDirectory().toString();
-//        File myDir = new File(root);
-//        myDir.mkdirs();
-//        String fname = "Image-" + image_name+ ".jpg";
-//        ContentValues values = new ContentValues();
-//        values.put(MediaStore.Images.Media.DESCRIPTION,description);
-//        values.put(MediaStore.Images.Media.DESCRIPTION,description);
-//        File file = new File(myDir, fname);
-//        if (file.exists()) file.delete();
-//        Log.i("LOAD", root + fname);
-//        try {
-//            FileOutputStream out = new FileOutputStream(file);
-//            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
-//            out.flush();
-//            out.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void checkPermission() {
-        if (ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (shouldShowRequestPermissionRationale(
-                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                // Explain to the user why we need to read the contacts
-            }
-
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-
-            // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
-            // app-defined int constant that should be quite unique
-
-            return;
-        }
-    }
-
-    private CameraView.Callback mCallback = new CameraView.Callback() {
-        @Override
-        public void onCameraOpened(CameraView cameraView) {
-            super.onCameraOpened(cameraView);
-        }
-
-        @Override
-        public void onCameraClosed(CameraView cameraView) {
-            super.onCameraClosed(cameraView);
-        }
-
-        @Override
-        public void onPictureTaken(CameraView cameraView, byte[] data) {
-            super.onPictureTaken(cameraView, data);
-
-            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-
-            bitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE, INPUT_SIZE, false);
-
-            ExifInterface exif = new ExifInterface(imagePath);
-            int exifOrientation = exif.getAttributeInt(
-                    ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-            int exifDegree = exifOrientationToDegrees(exifOrientation);
-            image = rotate(image, exifDegree);
-
-            imageViewResult.setImageBitmap(bitmap);
-
-            String title = "image11";
-
-            Context context = getApplicationContext();
-            String filePath = (context.getExternalCacheDir()).toString() + "/" + title + ".jpg";
-
-//                addImageToGallery(filePath,context);
-            imageSave(bitmap);
-            final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
-
-            Log.d("result message",results.toString());
-
-            resultString = results.toString();
-            String pattern =  "^[a-zA-Z]*$";
-
-            resultString = resultString.replaceAll("[^a-zA-Z,]","");
-            Log.d("resultString",resultString);
-
-            myTTS = new TextToSpeech(getApplicationContext(),new TextToSpeech.OnInitListener(){
-                @Override
-                public void onInit(int i) {
-                    myTTS.setLanguage(Locale.KOREAN);
-                    myTTS.speak(resultString,TextToSpeech.QUEUE_FLUSH,null);
-                }
-            });
-
-            textViewResult.setText(results.toString());
-
-        }
-
-//
-    };
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        cameraView.start();
-    }
-
-    @Override
-    protected void onPause() {
-        cameraView.stop();
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        myTTS.shutdown();
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                classifier.close();
-            }
-        });
-    }
 
     private void initTensorFlowAndLoadModel() {
         executor.execute(new Runnable() {
@@ -398,48 +230,109 @@ public class CameraTensorflowActivity extends AppCompatActivity {
         });
     }
 
-    /*public void detectFace(final Bitmap myBitmap) {
 
-        final Paint rectPaint = new Paint();
-        rectPaint.setStrokeWidth(5);
-        rectPaint.setColor(Color.RED);
-        rectPaint.setStyle(Paint.Style.STROKE);
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void checkPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
 
-        final Bitmap tempBitmap = Bitmap.createBitmap(myBitmap.getWidth(), myBitmap.getHeight(), Bitmap.Config.RGB_565);
-        final Canvas canvas = new Canvas(tempBitmap);
-        canvas.drawBitmap(myBitmap, 0, 0, null);
+            // Should we show an explanation?
+            if (shouldShowRequestPermissionRationale(
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                // Explain to the user why we need to read the contacts
+            }
 
-        com.google.android.gms.vision.face.FaceDetector faceDetector = new com.google.android.gms.vision.face.FaceDetector.Builder(getApplicationContext())
-                .setTrackingEnabled(false)
-                .setLandmarkType(com.google.android.gms.vision.face.FaceDetector.ALL_LANDMARKS)
-                .setMode(com.google.android.gms.vision.face.FaceDetector.FAST_MODE)
-                .build();
-        if (!faceDetector.isOperational()) {
-            Toast.makeText(getApplicationContext(), "your device is not operationg face detector", Toast.LENGTH_SHORT).show();
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+            // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
+            // app-defined int constant that should be quite unique
+
             return;
         }
-        Frame frame = new Frame.Builder().setBitmap(myBitmap).build();
-        SparseArray<Face> sparseArray = faceDetector.detect(frame);
+    }
 
-        if (sparseArray != null) {
-            RectF rectF;
-            for (int i = 0; i < sparseArray.size(); i++) {
-                Face face = sparseArray.valueAt(i);
-                float x1 = face.getPosition().x;
-                float y1 = face.getPosition().y;
-                float x2 = x1 + face.getWidth();
-                float y2 = y1 + face.getHeight();
-                rectF = new RectF(x1, y1, x2, y2);
-                canvas.drawRoundRect(rectF, 2, 2, rectPaint);
-                Log.d(String.valueOf(x1) + String.valueOf(x2) + String.valueOf(y1) + String.valueOf(y2), "locationOfRect");
-            }
-            BitmapDrawable drawable = new BitmapDrawable(getResources(), tempBitmap);
-            drawable.draw(canvas);
-//                    imageView.setImageDrawable(drawable);
-            Toast.makeText(getApplicationContext(), "take picture", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getApplicationContext(), "I don't know what to do", Toast.LENGTH_SHORT).show();
+
+    private CameraView.Callback mCallback = new CameraView.Callback() {
+        @Override
+        public void onCameraOpened(CameraView cameraView) {
+            super.onCameraOpened(cameraView);
         }
 
-    }*/
+        @Override
+        public void onCameraClosed(CameraView cameraView) {
+            super.onCameraClosed(cameraView);
+        }
+
+        @Override
+        public void onPictureTaken(CameraView cameraView, byte[] data) {
+            super.onPictureTaken(cameraView, data);
+
+            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+            bitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE, INPUT_SIZE, false);
+
+//            ExifInterface exif = new ExifInterface(imagePath);
+//            int exifOrientation = exif.getAttributeInt(
+//                    ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+//            int exifDegree = exifOrientationToDegrees(exifOrientation);
+//            image = rotate(image, exifDegree);
+
+            imageViewResult.setImageBitmap(bitmap);
+
+            String title = "image11";
+
+            Context context = getApplicationContext();
+            String filePath = (context.getExternalCacheDir()).toString() + "/" + title + ".jpg";
+
+//                addImageToGallery(filePath,context);
+            imageSave(bitmap);
+            final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
+
+            Log.d("result message", results.toString());
+
+            resultString = results.toString();
+            String pattern = "^[a-zA-Z]*$";
+
+            resultString = resultString.replaceAll("[^a-zA-Z,]", "");
+            Log.d("resultString", resultString);
+
+            myTTS = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+                @Override
+                public void onInit(int i) {
+                    myTTS.setLanguage(Locale.KOREAN);
+                    myTTS.speak(resultString, TextToSpeech.QUEUE_FLUSH, null);
+                }
+            });
+
+            textViewResult.setText(results.toString());
+
+        }
+
+//
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        cameraView.start();
+    }
+
+    @Override
+    protected void onPause() {
+        cameraView.stop();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        myTTS.shutdown();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                classifier.close();
+            }
+        });
+    }
 }
