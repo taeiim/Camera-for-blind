@@ -23,19 +23,20 @@
             android:value="ocr"/>
 
         <activity android:name=".Activity.MainActivity">
-
-        </activity>
-        <activity android:name=".Activity.SettingsActivity">
-
-        </activity>
-        <activity android:name=".Activity.ImageRecognitionActivity"/>
-        <activity android:name=".Activity.CameraTensorflowActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Activity.SettingsActivity">
+
+        </activity>
+        <activity android:name=".Activity.ImageRecognitionActivity"/>
+        <activity android:name=".Activity.CameraTensorflowActivity">
+
+        </activity>
+        <activity android:name=".Activity.CameraSelectActivity"/>
         <!--<activity android:name=".Activity.SettingsActivity"-->
             <!--tools:ignore="DuplicateActivity" />-->
     </application>

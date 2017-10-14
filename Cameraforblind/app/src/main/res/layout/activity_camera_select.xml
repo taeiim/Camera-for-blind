@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/cameraTensorflowLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#f93e3f">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="사물"
+            android:textColor="#FFFFFF"
+            android:layout_centerInParent="true"
+            android:textStyle="bold"
+            android:textSize="80dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/cameraLetterLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#fdc23e">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="글자"
+            android:textColor="#FFFFFF"
+            android:layout_centerInParent="true"
+            android:textStyle="bold"
+            android:textSize="80dp"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

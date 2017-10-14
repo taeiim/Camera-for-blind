@@ -329,7 +329,7 @@ public class CameraTensorflowActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        myTTS.shutdown();
+//        myTTS.shutdown();
         executor.execute(new Runnable() {
             @Override
             public void run() {
