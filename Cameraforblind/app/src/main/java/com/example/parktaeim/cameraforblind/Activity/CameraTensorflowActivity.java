@@ -22,8 +22,8 @@ import com.example.parktaeim.cameraforblind.R;
 import com.example.parktaeim.cameraforblind.TensorFlowImageClassifier;
 import com.flurgle.camerakit.CameraListener;
 import com.flurgle.camerakit.CameraView;
-import com.google.android.gms.vision.Frame;
-import com.google.android.gms.vision.face.Face;
+//import com.google.android.gms.vision.Frame;
+//import com.google.android.gms.vision.face.Face;
 
 import java.util.List;
 import java.util.Locale;
