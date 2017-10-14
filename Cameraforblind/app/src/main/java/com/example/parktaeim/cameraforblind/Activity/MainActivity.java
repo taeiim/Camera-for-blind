@@ -28,6 +28,9 @@ import com.example.parktaeim.cameraforblind.R;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.face.Face;
 
+import static com.example.parktaeim.cameraforblind.R.id.faceDetectionView;
+import static com.example.parktaeim.cameraforblind.R.id.loadCameraButton;
+
 //import com.example.parktaeim.cameraforblind.Preview;
 //import com.example.parktaeim.cameraforblind.R;
 //import com.example.parktaeim.cameraforblind.views.CameraSurfaceView;
@@ -35,11 +38,6 @@ import com.google.android.gms.vision.face.Face;
 
 public class MainActivity extends AppCompatActivity {
 
-
-//    private CameraSurfaceView cameraSurfaceView;
-//    private FaceDetectionView faceDetectionView;
-
-    ImageView imageView;
     Button btnProgress;
 
     @Override
@@ -47,11 +45,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        imageView = (ImageView) findViewById(R.id.image);
         btnProgress = (Button) findViewById(R.id.btnProgress);
-
         final Bitmap myBitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.face);
-        imageView.setImageBitmap(myBitmap);
+        detectFace(myBitmap);
+    }
+
+    public void detectFace(final Bitmap myBitmap) {
 
         final Paint rectPaint = new Paint();
         rectPaint.setStrokeWidth(5);
@@ -78,16 +77,20 @@ public class MainActivity extends AppCompatActivity {
                 SparseArray<Face> sparseArray = faceDetector.detect(frame);
 
                 if (sparseArray != null) {
+                    RectF rectF;
                     for (int i = 0; i < sparseArray.size(); i++) {
                         Face face = sparseArray.valueAt(i);
                         float x1 = face.getPosition().x;
                         float y1 = face.getPosition().y;
                         float x2 = x1 + face.getWidth();
                         float y2 = y1 + face.getHeight();
-                        RectF rectF = new RectF(x1, y1, x2, y2);
+                        rectF = new RectF(x1, y1, x2, y2);
                         canvas.drawRoundRect(rectF, 2, 2, rectPaint);
+                        Log.d(String.valueOf(x1) + String.valueOf(x2) + String.valueOf(y1) + String.valueOf(y2), "locationOfRect");
                     }
-                    imageView.setImageDrawable(new BitmapDrawable(getResources(), tempBitmap));
+                    BitmapDrawable drawable = new BitmapDrawable(getResources(), tempBitmap);
+                    drawable.draw(canvas);
+//                    imageView.setImageDrawable(drawable);
                     Toast.makeText(getApplicationContext(), "take picture", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "I don't know what to do", Toast.LENGTH_SHORT).show();
@@ -95,45 +98,5 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-        /*cameraSurfaceView = (CameraSurfaceView) findViewById(R.id.cameraSurfaceView);
-        faceDetectionView = (FaceDetectionView) findViewById(R.id.faceDetectionView);
-
-        final Button loadCameraButton = (Button) findViewById(R.id.loadCameraButton);
-        loadCameraButton.setVisibility(View.GONE);
-
-        cameraSurfaceView.setListener(new CameraSurfaceView.CameraSurfaceListener() {
-            @Override
-            public void onPictureTaken(Bitmap bitmap) {
-                loadCameraButton.setVisibility(View.VISIBLE);
-                faceDetectionView.setVisibility(View.VISIBLE);
-                cameraSurfaceView.setVisibility(View.GONE);
-                faceDetectionView.setContent(bitmap);
-            }
-        });
-
-        cameraSurfaceView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (cameraSurfaceView.isEnabled()) {
-                    cameraSurfaceView.setEnabled(false);
-                    cameraSurfaceView.captureImage();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        loadCameraButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                faceDetectionView.release();
-                faceDetectionView.setVisibility(View.GONE);
-                cameraSurfaceView.setVisibility(View.VISIBLE);
-                cameraSurfaceView.setEnabled(true);
-                loadCameraButton.setVisibility(View.GONE);
-            }
-        });*/
     }
-
 }
