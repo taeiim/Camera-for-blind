@@ -23,6 +23,7 @@ import com.example.parktaeim.cameraforblind.R;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
+import com.google.android.gms.vision.face.Landmark;
 
 /**
  * Created by parktaeim on 2017. 10. 14..
@@ -66,7 +67,7 @@ public class ImageRecognitionActivity extends AppCompatActivity {
                     Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),data.getData());
                     selectedImageView.setImageBitmap(image_bitmap);
 
-                    final Bitmap myBitmap = ((BitmapDrawable)selectedImageView.getDrawable()).getBitmap();
+                    final Bitmap myBitmap = image_bitmap;
                     selectedImageView.setImageBitmap(myBitmap);
 
                     final Paint rectPaint = new Paint();
@@ -92,14 +93,23 @@ public class ImageRecognitionActivity extends AppCompatActivity {
                     Frame frame = new Frame.Builder().setBitmap(myBitmap).build();
                     SparseArray<Face> sparseArray = faceDetector.detect(frame);
 
+                    double scale = Math.min(canvas.getWidth() / image_bitmap.getWidth(), canvas.getHeight() / image_bitmap.getHeight());
                     for(int i =  0; i < sparseArray.size(); i++) {
                         Face face = sparseArray.valueAt(i);
-                        float x1 = face.getPosition().x;
-                        float y1 = face.getPosition().y;
-                        float x2 = x1 + face.getWidth();
-                        float y2 = y1 + face.getWidth();
+                        float x1 = (float) (face.getPosition().x * scale);
+                        float y1 = (float) (face.getPosition().y * scale);
+                        float x2 = x1 + (float) (face.getWidth() * scale);
+                        float y2 = y1 + (float) (face.getHeight() * scale);
                         RectF rectF = new RectF(x1,y1,x2,y2);
                         canvas.drawRoundRect(rectF,2,2,rectPaint);
+
+                        for(Landmark landmark : face.getLandmarks()) {
+                            int cx = (int) (landmark.getPosition().x * scale);
+                            int cy = (int) (landmark.getPosition().y * scale);
+                            canvas.drawCircle(cx, cy, 10, rectPaint);
+                        }
+                        selectedImageView.setImageDrawable(new BitmapDrawable(getResources(), tempBitmap));
+
                     }
 
                     selectedImageView.setImageDrawable(new BitmapDrawable(getResources(), tempBitmap));
