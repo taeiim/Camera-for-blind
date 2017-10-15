@@ -12,6 +12,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.SyncStateContract;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
@@ -26,6 +27,8 @@ import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
 import com.google.android.gms.vision.face.Landmark;
 
+import java.util.Locale;
+
 /**
  * Created by parktaeim on 2017. 10. 14..
  */
@@ -35,6 +38,8 @@ public class ImageRecognitionActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_ALBUM = 100;
     ImageView selectedImageView;
     Button imageBtn;
+    private TextToSpeech myTTS;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,11 +93,11 @@ public class ImageRecognitionActivity extends AppCompatActivity {
                             .build();
 
                     if(!faceDetector.isOperational()){
-                        Toast.makeText(getApplicationContext(), "no", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     Frame frame = new Frame.Builder().setBitmap(myBitmap).build();
                     SparseArray<Face> sparseArray = faceDetector.detect(frame);
+
 
                     double scale = Math.min(canvas.getWidth() / image_bitmap.getWidth(), canvas.getHeight() / image_bitmap.getHeight());
                     for(int i =  0; i < sparseArray.size(); i++) {
@@ -101,8 +106,33 @@ public class ImageRecognitionActivity extends AppCompatActivity {
                         float y1 = (float) (face.getPosition().y * scale);
                         float x2 = x1 + (float) (face.getWidth() * scale);
                         float y2 = y1 + (float) (face.getHeight() * scale);
+
+                        if(String.valueOf(x1) != null) {
+                            myTTS = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+                                @Override
+                                public void onInit(int i) {
+                                    myTTS.setLanguage(Locale.KOREAN);
+                                    myTTS.speak("얼굴 사진 입니다. ", TextToSpeech.QUEUE_FLUSH, null);
+
+                                }
+                            });
+                        } else {
+//                            Toast.makeText(getApplicationContext(), "no", Toast.LENGTH_SHORT).show();
+                            myTTS = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+                                @Override
+                                public void onInit(int i) {
+                                    myTTS.setLanguage(Locale.KOREAN);
+                                    myTTS.speak("얼굴 사진이 아닙니다. ", TextToSpeech.QUEUE_FLUSH, null);
+
+                                }
+                            });
+                        }
+
                         RectF rectF = new RectF(x1,y1,x2,y2);
                         canvas.drawRoundRect(rectF,2,2,rectPaint);
+
+//                        Toast.makeText(getApplicationContext(), String.valueOf(x1) + String.valueOf(y1) + String.valueOf(x2) + String.valueOf(y2), Toast.LENGTH_SHORT).show();
+
 
                         for(Landmark landmark : face.getLandmarks()) {
                             int cx = (int) (landmark.getPosition().x * scale);
@@ -111,13 +141,14 @@ public class ImageRecognitionActivity extends AppCompatActivity {
                         }
                         selectedImageView.setImageDrawable(new BitmapDrawable(getResources(), tempBitmap));
 
+
                         if(!face.getLandmarks().isEmpty()) {
                             float midPoint = (x1 + x2) / 2;
                             float yPoint = y1;
 
                             String smile = "status : smile";
                             if(face.getIsSmilingProbability() >= 0.5f) {
-                                Toast.makeText(getApplicationContext(), smile, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getApplicationContext(), smile, Toast.LENGTH_SHORT).show();
                             }
                         }
 

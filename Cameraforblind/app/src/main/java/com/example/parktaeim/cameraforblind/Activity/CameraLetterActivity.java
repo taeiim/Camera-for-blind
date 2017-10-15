@@ -116,7 +116,6 @@ public class CameraLetterActivity extends AppCompatActivity implements View.OnCl
                     myTTS = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
                         @Override
                         public void onInit(int i) {
-                            myTTS.setLanguage(Locale.KOREAN);
                             myTTS.speak(text, TextToSpeech.QUEUE_FLUSH, null);
 
                         }

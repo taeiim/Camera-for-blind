@@ -16,8 +16,12 @@
         <Button
             android:id="@+id/imageBtn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:text="이미지 가져오기"
+            android:textSize="50dp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:background="#f93e3f"
             android:layout_alignParentBottom="true"/>
 
     </RelativeLayout>
