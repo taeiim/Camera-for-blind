@@ -11,6 +11,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.SyncStateContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
@@ -109,6 +110,16 @@ public class ImageRecognitionActivity extends AppCompatActivity {
                             canvas.drawCircle(cx, cy, 10, rectPaint);
                         }
                         selectedImageView.setImageDrawable(new BitmapDrawable(getResources(), tempBitmap));
+
+                        if(!face.getLandmarks().isEmpty()) {
+                            float midPoint = (x1 + x2) / 2;
+                            float yPoint = y1;
+
+                            String smile = "status : smile";
+                            if(face.getIsSmilingProbability() >= 0.5f) {
+                                Toast.makeText(getApplicationContext(), smile, Toast.LENGTH_SHORT).show();
+                            }
+                        }
 
                     }
 
