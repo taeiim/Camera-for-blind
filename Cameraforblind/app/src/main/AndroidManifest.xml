@@ -37,6 +37,8 @@
 
         </activity>
         <activity android:name=".Activity.CameraSelectActivity"/>
+        <activity android:name=".Activity.CameraLetterActivity"/>
+        <activity android:name=".Activity.OcrCaptureActivity"/>
         <!--<activity android:name=".Activity.SettingsActivity"-->
             <!--tools:ignore="DuplicateActivity" />-->
     </application>
