@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/ocr_header"
+        android:text="촬영하기 버튼을 눌러보세요"
         android:id="@+id/status_message"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
@@ -28,13 +28,25 @@
         android:layout_alignRight="@+id/status_message"
         android:layout_alignEnd="@+id/status_message" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/read_text"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="vertical"
         android:id="@+id/read_text"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="#f93e3f">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="촬영하기"
+            android:textSize="25dp"
+            android:textColor="#FFFFFF"
+            android:layout_gravity="center"
+            android:layout_centerInParent="true"
+            android:textStyle="bold"/>
+    </RelativeLayout>
 
     <CheckBox
         android:layout_width="wrap_content"

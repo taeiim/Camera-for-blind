@@ -1,5 +1,6 @@
 package com.example.parktaeim.cameraforblind.Activity;
 
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -36,6 +37,8 @@ import android.view.View;
 import com.example.parktaeim.cameraforblind.R;
 import com.google.android.gms.common.api.CommonStatusCodes;
 
+import java.util.Locale;
+
 /**
  * Main activity demonstrating how to pass extra parameters to an activity that
  * recognizes text.
@@ -46,6 +49,7 @@ public class CameraLetterActivity extends AppCompatActivity implements View.OnCl
     private CompoundButton autoFocus;
     private TextView statusMessage;
     private TextView textValue;
+    private TextToSpeech myTTS;
 
     private static final int RC_OCR_CAPTURE = 9003;
     private static final String TAG = "MainActivity";
@@ -109,6 +113,14 @@ public class CameraLetterActivity extends AppCompatActivity implements View.OnCl
                     String text = data.getStringExtra(OcrCaptureActivity.TextBlockObject);
                     statusMessage.setText(R.string.ocr_success);
                     textValue.setText(text);
+                    myTTS = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+                        @Override
+                        public void onInit(int i) {
+                            myTTS.setLanguage(Locale.KOREAN);
+                            myTTS.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+
+                        }
+                    });
                     Log.d(TAG, "Text read: " + text);
                 } else {
                     statusMessage.setText(R.string.ocr_failure);

@@ -15,7 +15,7 @@
     <string name="read_text">Detect Text</string>
     <string name="auto_focus">Auto Focus</string>
     <string name="use_flash">Use Flash</string>
-    <string name="ocr_success">Text read successfully</string>
-    <string name="ocr_failure">No text captured</string>
+    <string name="ocr_success">글자가 성공적으로 읽혔습니다!</string>
+    <string name="ocr_failure">캡쳐된 글자가 없습니다.</string>
     <string name="ocr_error">"Error reading text: %1$s"</string>
 </resources>
